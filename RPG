@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《宿營白骨案》沉浸式推理 - 第一階段：疑雲密佈</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #8b0000;
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --highlight: #d9534f;
+            --border-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .map-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .map-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--highlight);
+        }
+
+        .npc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .npc-btn {
+            background: #2a2a2a;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 15px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .npc-btn:hover {
+            border-color: var(--highlight);
+            background: #333333;
+        }
+
+        .npc-btn.active {
+            background: var(--accent-color);
+            border-color: #ff4d4d;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .npc-btn span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .npc-btn.active span {
+            color: #dddddd;
+        }
+
+        .dialogue-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            display: none;
+        }
+
+        .dialogue-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .role-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .role-title {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .role-location {
+            font-size: 0.85rem;
+            background: #333;
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: #ffb703;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            background: #252525;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .question-btn {
+            background: none;
+            border: none;
+            color: var(--highlight);
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answer-content {
+            margin-top: 12px;
+            color: var(--text-color);
+            font-size: 0.98rem;
+            line-height: 1.7;
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .clue-tag {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            background: #3d0000;
+            color: #ff8888;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #770000;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>《宿營白骨案》第一階段</h1>
+        <p>一年前的真相沉入地底，一年後的白骨揭開謊言。請前往農場各地訊問相關人員。</p>
+    </header>
+
+    <!-- 地圖與人物選擇區 -->
+    <div class="map-section">
+        <h2>📍 農場調查地圖 — 請選擇詢問對象</h2>
+        <div class="npc-grid">
+            <button class="npc-btn" onclick="selectNPC('A')">
+                副籌 A
+                <span>[系辦/帳務區]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('G')">
+                總務 G
+                <span>[營本部/帳務桌]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('B')">
+                女友 B
+                <span>[小木屋住宿區]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('C')">
+                暗戀者 C
+                <span>[器材庫房]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('D')">
+                學長 D
+                <span>[農場外圍步道]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('F')">
+                美宣 F
+                <span>[後山涼亭]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('I')">
+                巡邏員 I
+                <span>[巡邏簽到處]</span>
+            </button>
+            <button class="npc-btn" onclick="selectNPC('E')">
+                農場主人 E
+                <span>[主棟儲藏室外]</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 對話內容區 -->
+    <div id="dialogue-container">
+        <!-- 預設提示 -->
+        <div style="text-align: center; color: var(--text-muted); padding: 40px;" id="default-msg">
+            👈 請點擊上方角色按鈕，開始進行搜查與詢問。
+        </div>
+
+        <!-- NPC 1: 副籌 A -->
+        <div id="npc-A" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">副籌 A</div>
+                <div class="role-location">📍 位置：系辦/帳務區</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：對於營隊的帳目與資金管理，你身為副籌了解多少？</div>
+                <div class="answer-content">
+                    帳目主要是總務 G 在管。雖然大筆支出要我跟 Leader 複核，但後期太忙，只要 Leader 簽字我就放行。如果現在帳目有高達二、三十萬的出入，你們應該去嚴查總務 G，看他是不是帳沒記清楚，或者……有人手腳不乾淨，故意挪用公款？
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：你最後一次看到 Leader 是什麼時候？他當時狀態如何？</div>
+                <div class="answer-content">
+                    最後一晚深夜十點出頭吧，他一個人躲在辦公室。我好心問他要不要幫忙，他居然沉著臉叫我滾。他那陣子狀況非常詭異，常常看著文件發呆，很多決策到後來都是我含淚幫他分擔。我看他就是精神出了狀況，壓力太大，丟下爛攤子自己先回台北跑路了。
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 2: 總務 G -->
+        <div id="npc-G" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">總務 G</div>
+                <div class="role-location">📍 位置：營本部/帳務桌</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：聽說籌備後期美宣組預算被嚴重刪減，這是你的決定嗎？</div>
+                <div class="answer-content">
+                    <i>（眼神瘋狂閃爍，死命捏著手指）</i><br>
+                    這怎麼會是我的決定？是 Leader 逼我改的！當時有一些莫名其妙的資金調整，Leader 態度很硬，叫我把美宣組經費全部砍掉來墊補。我只是個聽令做事的總務，預算有問題你們去問他，不要把責任推到我頭上！
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：當初那份最後提交給系上的資金流動表，你確定完全沒有問題嗎？</div>
+                <div class="answer-content">
+                    <i>（臉色刷白，猛地一拍桌）</i><br>
+                    當然沒問題！那份表格是當初營隊結束後大家「共同確認」才送出去的！那時候 Leader 莫名其妙消失，大家亂成一團，副籌 A 什麼都不管，是我自己一個人不眠不休加班好幾天，好不容易才把帳對齊的！你們憑什麼質疑我的專業？
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 3: 女友 B -->
+        <div id="npc-B" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">女友 B</div>
+                <div class="role-location">📍 位置：小木屋住宿區</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：你當時和 Leader 的關係似乎降到了冰點，發生了什麼事嗎？</div>
+                <div class="answer-content">
+                    交往久了沒話聊不行嗎？<i>（冷笑）</i><br>
+                    他出事前那一個月像中邪一樣，訊息整天不回。最可笑的是，我的好閨蜜 C 居然比我還清楚他的行程，每次他聯絡不上，C 就能幫他緩頰。既然他那麼想跟他的工作、還有別的女人過日子，那我也沒必要作賤自己。
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：這一年來，妳還有試圖跟 Leader 聯絡嗎？</div>
+                <div class="answer-content">
+                    聯絡？那一晚吵完架我就把我送他的情侶藍色手鍊砸在他身上、把他所有的通訊軟體都封鎖了，誰稀罕聯絡他？<i>（聲音發抖，眼眶泛紅）</i>……但我起初以為他只是在跟我冷戰。直到這一年過去了，他連家裡都沒回，他到底是恨我恨到什麼程度，才要搞這種人間蒸發來報復我？
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 4: 暗戀者 C -->
+        <div id="npc-C" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">暗戀者 C</div>
+                <div class="role-location">📍 位置：器材庫房</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：一年前在籌備營隊期間，妳平時跟 Leader 的交友圈或身邊的人熟嗎？</div>
+                <div class="answer-content">
+                    <i>（揪著衣角，語速變快）</i><br>
+                    我跟大家都很好啊。特別是 B，她是我大學最好的閨蜜！所以那陣子她跟我抱怨 Leader 對她很冷淡時，我也很替她著想，常常幫忙去跟 Leader 對接工作……我真的只是希望他們兩個人好好的！我從來沒有想過要介入，更不可能做出對不起 B 的事！
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：宿營最後一天的深夜，營隊活動接近尾聲時，妳都在哪裡忙些什麼？</div>
+                <div class="answer-content">
+                    <i>（身體緊繃）</i><br>
+                    我那晚後半段都在公共區整理器材。現場大排檔音樂開超大聲，大家都在狂歡，很混亂。不過……那一晚我人在公共區搬音響時，確實隱約聽到後山方向傳來很激烈的爭吵聲。但我以為是有人喝醉在鬧，就沒過去了。大家還是別往後山廢棄小街那邊去比較好。
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 5: 學長 D -->
+        <div id="npc-D" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">學長 D</div>
+                <div class="role-location">📍 位置：農場外圍步道</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：聽說你一年前家裡遇到一些狀況，而且經常缺席會議去打工，是這樣嗎？</div>
+                <div class="answer-content">
+                    <i>（眼神極度警惕，語氣變硬）</i><br>
+                    我私人的家務事，到底跟營隊有什麼關係？我雖然常常遲到，但該我搬的器材我一樣都沒少搬。我妹妹的醫藥費我自己會想辦法，我不需要任何人的同情，更沒拿過營隊或任何人的恩惠！
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：在宿營最後一天活動空檔，很多幹部都說你常常不見人影，你那時候去哪了？</div>
+                <div class="answer-content">
+                    我那陣子打工太累，一有空檔就想找個安靜的地方吹吹風。我通常只是在營區外圍非常平靜地散散步而已，真的沒有去什麼奇怪的地方，也絕對沒有遇到任何人！你們不要因為我平時孤僻，就什麼事都懷疑到我頭上。
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 6: 美宣 F -->
+        <div id="npc-F" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">美宣 F</div>
+                <div class="role-location">📍 位置：後山涼亭</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：宿營最後一天的深夜，妳有再去找過 Leader 嗎？當時發生了什麼？</div>
+                <div class="answer-content">
+                    我們美宣組熬夜好幾個月的設計被他一刀砍，連合理解釋都不給！最後一晚深夜，我因為喝了點酒，一時衝動又單獨跑去辦公室找他理論。我當時氣瘋了，指責他不配當老大，說活動搞砸全是他一個人的責任！我罵完就後悔了，拉不下臉道歉，就自己跑去後山吹風。
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：妳去後山吹風的時候，有注意到什麼不尋常的事情嗎？</div>
+                <div class="answer-content">
+                    那一晚在後山，我遠遠地有聽到別人在激烈爭吵的聲音！更怪的是，我回營區的路上，還遠遠看到 D 學長魂不守舍的，衣服看起來髒兮兮、都是泥土，整個人慌慌張張地往水源處跑過去……要覺得反常，你們怎麼不去找 D 學長？憑什麼覺得是我的氣話把人逼走的！
+                    <br><span class="clue-tag">⚠️ 證詞破綻：打臉 D 的「平靜散步」發言</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 7: 巡邏員 I -->
+        <div id="npc-I" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">巡邏員 I</div>
+                <div class="role-location">📍 位置：巡邏簽到處</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：隊員回憶那一晚十點左右，看到你跟學弟妹在玩酒桌遊戲，你當時有認真巡邏嗎？</div>
+                <div class="answer-content">
+                    <i>（冷汗直流，語速變快）</i><br>
+                    那、那是巡邏前拍的照片！或者是之後補拍的！大家出來宿營，中間空檔跟學弟妹聊個天很正常吧？但我保證我的巡邏絕對沒有漏掉，該走的地方我都走了，當年的巡邏簽到簿就是我的鐵證！
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：你那晚去簽到時，有遇到其他幹部嗎？簽到處有什麼不尋常的地方嗎？</div>
+                <div class="answer-content">
+                    <i>（試圖轉移焦點）</i><br>
+                    我簽到的時候那裡沒人。不過……我記得我 22:15 左右去簽名時，看到副籌 A 已經簽在上面了（時間寫著 22:10）。對了，當時簽到處公用的黑色原子筆好像沒水了，但 A 簽名的筆跡卻是藍色的。這沒什麼大不了的吧？可能他自己有帶筆，反正我是用嘴咬著公用黑筆勉強寫完的。
+                    <br><span class="clue-tag">⚠️ 關鍵物證：藍色原子筆與時間線矛盾</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NPC 8: 農場主人 E -->
+        <div id="npc-E" class="dialogue-section">
+            <div class="role-header">
+                <div class="role-title">農場主人 E</div>
+                <div class="role-location">📍 位置：主棟儲藏室外</div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q1：聽說一年前你和 Leader 交情很好，在營期結束前，他有跟你提過什麼煩惱嗎？</div>
+                <div class="answer-content">
+                    <i>（眼神微微一變，隨即嘆氣）</i><br>
+                    那孩子真的很有禮貌，他出事那段時間，看起來確實很累。我有勸他多休息，但他那時總說是學校系上活動的事。喔對了……他那陣子好像買了一個小保險箱，說是系上活動要用的重要道具，暫時寄放在我這。他失蹤後，這東西就一直擺在我的儲藏室裡，我都沒動過。
+                    <br><span class="clue-tag">🔐 物證觸發：總籌留下的保險箱</span>
+                </div>
+            </div>
+            <div class="question-block">
+                <div class="question-btn">Q2：一年前事發後的隔天早上，大家發現 Leader 沒出現時，你在農場周邊巡視有注意到什麼嗎？</div>
+                <div class="answer-content">
+                    唉，我清晨去巡邏，整個農場都靜悄悄的，真的什麼人都沒看到啊。後山那邊風大，我當時還以為那孩子是一個人壓力太大、想不開，自己先坐車回台北市區了。誰能想到這一年來他居然都沒回家……可能他就只是在我們沒注意的時候自己離開了吧……
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>《宿營白骨案》GM 第一階段問答系統 — 點擊人物進行現場訊問</p>
+    </footer>
+</div>
+
+<script>
+    function selectNPC(id) {
+        // 隱藏預設文字
+        document.getElementById('default-msg').style.display = 'none';
+
+        // 移除所有按鈕 active 樣式
+        const buttons = document.querySelectorAll('.npc-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // 隱藏所有對話區塊
+        const sections = document.querySelectorAll('.dialogue-section');
+        sections.forEach(sec => sec.classList.remove('active'));
+
+        // 啟用當前選取的 NPC 按鈕與對話框
+        event.currentTarget.classList.add('active');
+        const targetSection = document.getElementById('npc-' + id);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>
