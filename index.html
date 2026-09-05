@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="第12屆宿營 — 認識我們的幹部團隊！和每位幹部對話，了解他們的工作與故事。">
+    <title>第12屆宿營 — 大學宿營趣</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700;900&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ===== TITLE SCREEN ===== -->
+    <section id="title-screen" class="screen active">
+        <div class="title-bg-overlay"></div>
+        <div class="title-content">
+            <div class="title-badge">🏕️ 第12屆 大學宿營</div>
+            <h1 class="title-main">
+                <span class="title-char" style="--i:0">大</span>
+                <span class="title-char" style="--i:1">學</span>
+                <span class="title-char" style="--i:2">宿</span>
+                <span class="title-char" style="--i:3">營</span>
+                <span class="title-char" style="--i:4">趣</span>
+            </h1>
+            <p class="title-subtitle">三天兩夜的山區冒險，即將展開！</p>
+            <div class="title-divider">
+                <span></span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg>
+                <span></span>
+            </div>
+            <p class="title-desc">在開始之前，先來認識<br>這次營隊的幹部們吧！</p>
+            <button id="btn-start" class="btn-primary" onclick="startGame()">
+                <span class="btn-text">出發！</span>
+                <span class="btn-icon">🚀</span>
+            </button>
+        </div>
+        <div class="scroll-hint">
+            <span>向下滾動</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ===== BRIEFING SCREEN ===== -->
+    <section id="briefing-screen" class="screen">
+        <div class="screen-inner">
+            <div class="briefing-header">
+                <div class="case-file-tag">🏕️ CAMP INFO</div>
+                <h2>營隊簡介</h2>
+            </div>
+            <div class="briefing-content">
+                <div class="briefing-timeline">
+                    <div class="timeline-item" style="--delay: 0.1s">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card">
+                            <div class="timeline-date">📍 地點</div>
+                            <p>第 12 屆大學宿營在<strong>山區農場</strong>舉行，共三天兩夜。風景優美、空氣新鮮！</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="--delay: 0.3s">
+                        <div class="timeline-dot pulse"></div>
+                        <div class="timeline-card">
+                            <div class="timeline-date">👥 團隊</div>
+                            <p>營隊由一位<strong>總籌</strong>帶領，底下設有副籌、總務、公關、活動、器攝、美宣、隊輔、機動等各股，另有農場主人協助場地事宜。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="--delay: 0.5s">
+                        <div class="timeline-dot fun"></div>
+                        <div class="timeline-card">
+                            <div class="timeline-date">🎯 活動</div>
+                            <p>豐富的營隊活動包括<strong>闖關遊戲、晚會、團康 RPG、水大地活動</strong>……每個人都在全力準備，希望帶給學員最棒的體驗！</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="--delay: 0.7s">
+                        <div class="timeline-dot star"></div>
+                        <div class="timeline-card">
+                            <div class="timeline-date">💬 你的任務</div>
+                            <p>和每一位幹部<strong>聊聊天</strong>，認識他們的職責與故事。聽聽他們怎麼說，記下你覺得有趣的地方！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="showScreen('game-screen')">
+                <span class="btn-text">開始認識幹部們</span>
+                <span class="btn-icon">👋</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ===== GAME SCREEN ===== -->
+    <section id="game-screen" class="screen">
+        <div class="game-layout">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>🏕️ 探索進度</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">已對話 0 / 8 人</span>
+                </div>
+                <nav class="sidebar-nav">
+                    <button class="sidebar-btn active" data-tab="npcs" onclick="switchTab('npcs')">
+                        <span class="sidebar-icon">👥</span>
+                        <span>幹部們</span>
+                    </button>
+                    <button class="sidebar-btn" data-tab="clues" onclick="switchTab('clues')">
+                        <span class="sidebar-icon">📋</span>
+                        <span>營隊資料</span>
+                    </button>
+                    <button class="sidebar-btn" data-tab="locker" onclick="switchTab('locker')">
+                        <span class="sidebar-icon">🧳</span>
+                        <span>道具櫃</span>
+                        <span class="locker-badge" id="locker-badge" style="display:none">0</span>
+                    </button>
+                    <button class="sidebar-btn" data-tab="notes" onclick="switchTab('notes')">
+                        <span class="sidebar-icon">📝</span>
+                        <span>筆記</span>
+                    </button>
+                    <button class="sidebar-btn report-btn" id="report-btn" onclick="openReportModal()" style="display:none;">
+                        <span class="sidebar-icon">🚨</span>
+                        <span>舉報犯人</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Report Criminal Modal -->
+            <div class="modal-overlay" id="report-modal">
+                <div class="modal-content" style="max-width:600px;">
+                    <button class="modal-close" onclick="closeReportModal()">✕</button>
+                    <div id="report-modal-body">
+                        <h3 style="text-align:center; font-family:var(--font-serif); font-size:1.4rem; margin-bottom:8px;">🚨 犯人舉報</h3>
+                        <p style="text-align:center; font-size:0.85rem; color:var(--text-secondary); margin-bottom:24px;">根據你的調查結果，你認為誰是殺害總籌 K 的兇手？</p>
+                        <div class="report-npc-grid" id="report-npc-grid"></div>
+                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:16px;">⚠️ 舉報後無法更改，請確認你的推理！</p>
+                    </div>
+                    <div id="report-result" style="display:none;"></div>
+                </div>
+            </div>
+
+            <main class="main-content">
+                <!-- NPC Tab -->
+                <div id="tab-npcs" class="tab-content active">
+                    <div class="tab-header">
+                        <h2>幹部名單</h2>
+                        <p class="tab-desc">點擊一位幹部開始對話，聽聽他們的自我介紹，然後選一個問題和他們聊聊！</p>
+                    </div>
+                    <div class="npc-grid" id="npc-grid"></div>
+                </div>
+
+                <!-- Clues Tab -->
+                <div id="tab-clues" class="tab-content">
+                    <div class="tab-header">
+                        <h2>營隊資料</h2>
+                        <p class="tab-desc">查看營隊相關的公開資料。</p>
+                    </div>
+                    <div class="clues-grid">
+                        <div class="clue-card" onclick="openClueModal('handbook')">
+                            <div class="clue-card-img">
+                                <img src="assets/handbook.png" alt="幹部手冊">
+                                <div class="clue-card-overlay"><span>點擊查看</span></div>
+                            </div>
+                            <div class="clue-card-info">
+                                <h3>📒 幹部手冊</h3>
+                                <p>第 12 屆宿營幹部編制表，記載了所有股別的職掌與分工。訪問過的幹部頭像會顯示。</p>
+                            </div>
+                        </div>
+                        <div class="clue-card" onclick="openClueModal('photo')">
+                            <div class="clue-card-img">
+                                <img src="assets/group_photo.png" alt="大合照">
+                                <div class="clue-card-overlay"><span>點擊查看</span></div>
+                            </div>
+                            <div class="clue-card-info">
+                                <h3>📷 大合照</h3>
+                                <p>宿營期間拍攝的全體合照，大家比著第12屆的手勢。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evidence Locker Tab -->
+                <div id="tab-locker" class="tab-content">
+                    <div class="tab-header">
+                        <h2>🧳 道具櫃</h2>
+                        <p class="tab-desc">在對話中獲得的文件與物證會收納在這裡。</p>
+                    </div>
+                    <div class="locker-grid" id="locker-grid">
+                        <div class="locker-empty" id="locker-empty">
+                            <div class="locker-empty-icon">🧳</div>
+                            <p>道具櫃目前是空的</p>
+                            <p class="locker-empty-hint">和幹部們對話時，他們可能會提供一些文件或物品作為佐證。<br>獲得的道具會自動收入這裡。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div id="tab-notes" class="tab-content">
+                    <div class="tab-header">
+                        <h2>你的筆記</h2>
+                        <p class="tab-desc">記下你在對話中發現的有趣事情。</p>
+                    </div>
+                    <div class="notes-area">
+                        <textarea id="player-notes" placeholder="在這裡記錄你的筆記...&#10;&#10;例如：&#10;- A 說帳目有二三十萬的出入？&#10;- D 學長最後一晚衣服很髒？&#10;- I 說 A 用藍筆簽名，但簽到處只有黑筆？"></textarea>
+                        <div class="notes-toolbar">
+                            <span class="notes-hint">💡 筆記會自動儲存在瀏覽器中</span>
+                        </div>
+                    </div>
+                    <div class="investigation-log">
+                        <h3>💬 對話紀錄</h3>
+                        <div id="investigation-log-content">
+                            <p class="log-empty">尚未進行任何對話。</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- ===== NPC DIALOG MODAL ===== -->
+    <div id="npc-modal" class="modal">
+        <div class="modal-backdrop" onclick="closeNpcModal()"></div>
+        <div class="modal-content npc-dialog-modal">
+            <button class="modal-close" onclick="closeNpcModal()">✕</button>
+            <div class="npc-dialog-header" id="npc-dialog-header">
+                <div class="npc-dialog-avatar" id="npc-dialog-avatar"></div>
+                <div class="npc-dialog-info">
+                    <h3 id="npc-dialog-name"></h3>
+                    <span id="npc-dialog-role" class="npc-role-badge"></span>
+                    <p id="npc-dialog-desc" class="npc-dialog-desc"></p>
+                </div>
+            </div>
+            <div class="npc-dialog-body" id="npc-dialog-body"></div>
+        </div>
+    </div>
+
+    <!-- ===== CLUE MODAL ===== -->
+    <div id="clue-modal" class="modal">
+        <div class="modal-backdrop" onclick="closeClueModal()"></div>
+        <div class="modal-content clue-modal-content">
+            <button class="modal-close" onclick="closeClueModal()">✕</button>
+            <div id="clue-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- ===== PROP MODAL (for expense report, patrol log) ===== -->
+    <div id="prop-modal" class="modal">
+        <div class="modal-backdrop" onclick="closePropModal()"></div>
+        <div class="modal-content prop-modal-content">
+            <button class="modal-close" onclick="closePropModal()">✕</button>
+            <div id="prop-modal-body"></div>
+        </div>
+    </div>
+
+    <button class="mobile-nav-toggle" id="mobile-nav-toggle" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- ===== PHASE 2: TRANSITION SCREEN ===== -->
+    <section id="phase2-transition" class="screen phase2-transition">
+        <div class="transition-text-container" id="transition-text-container">
+        </div>
+        <button class="transition-skip" id="transition-skip" onclick="skipTransition()">跳過 ▸</button>
+    </section>
+
+    <!-- ===== PHASE 2: EVIDENCE SCENE ===== -->
+    <section id="phase2-evidence" class="screen evidence-scene">
+        <div class="evidence-scene-inner">
+            <h2 class="evidence-title">🔍 犯罪現場蒐證區</h2>
+            <p class="evidence-subtitle">仔細觀察現場，點擊你認為可疑的物品進行蒐證</p>
+            <div class="evidence-image-container" id="evidence-image-container">
+                <img src="assets/crime_scene.jpg" alt="犯罪現場">
+                <!-- Hotspot: Blue bracelet (near the hand, bottom-left area) -->
+                <div class="evidence-hotspot evidence-hotspot-hidden" id="hotspot-bracelet" style="left:28%;top:74%;width:10%;height:12%;" onclick="collectEvidenceItem('bracelet')"></div>
+                <!-- Hotspot: Real expense documents (scattered receipts, right-center area) -->
+                <div class="evidence-hotspot evidence-hotspot-hidden" id="hotspot-real_expense" style="left:52%;top:60%;width:20%;height:22%;" onclick="collectEvidenceItem('real_expense')"></div>
+            </div>
+            <p class="evidence-collected-hint" id="evidence-collected-hint"></p>
+            <button class="btn-primary evidence-continue-btn" id="evidence-continue-btn" onclick="enterPhase2Game()" style="display:none;">
+                <span class="btn-text">進入偵查階段</span>
+                <span class="btn-icon">🔎</span>
+            </button>
+        </div>
+    </section>
+
+    <script src="game.js"></script>
+</body>
+</html>
