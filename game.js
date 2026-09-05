@@ -21,7 +21,7 @@ const HANDBOOK_DATA = [
         id: 'A',
         title: '副籌',
         fullTitle: '副籌（副召集人）',
-        avatar: 'assets/npc_a.png',
+        avatar: 'npc_a.png',
         alwaysShow: false,
         desc: [
             '統籌與進度控管：負責整體營隊規劃、時程進度掌控，並監督引導各股別之工作執行。',
@@ -33,7 +33,7 @@ const HANDBOOK_DATA = [
         id: 'G',
         title: '總務股',
         fullTitle: '總務股',
-        avatar: 'assets/npc_g.png',
+        avatar: 'npc_g.png',
         alwaysShow: false,
         desc: [
             '財務與預算管理：編列營隊整體收支預算，控管各組別經費使用上限與核銷審查。',
@@ -45,7 +45,7 @@ const HANDBOOK_DATA = [
         id: 'B',
         title: '公關股',
         fullTitle: '公關股',
-        avatar: 'assets/npc_b.png',
+        avatar: 'npc_b.png',
         alwaysShow: false,
         desc: [
             '品牌宣傳與社群營運：負責營隊官方粉專、社群媒體之宣傳企劃、文案撰寫與日常經營。',
@@ -57,7 +57,7 @@ const HANDBOOK_DATA = [
         id: 'C',
         title: '活動股',
         fullTitle: '活動股',
-        avatar: 'assets/npc_c.png',
+        avatar: 'npc_c.png',
         alwaysShow: false,
         desc: [
             '闖關組：發想與設計組別對抗闖關遊戲，準備遊戲道具及規則流程。',
@@ -70,7 +70,7 @@ const HANDBOOK_DATA = [
         id: 'F',
         title: '美宣股',
         fullTitle: '美宣股',
-        avatar: 'assets/npc_f.png',
+        avatar: 'npc_f.png',
         alwaysShow: false,
         desc: [
             '主視覺與文宣設計：設計營隊主視覺標誌、登隊宣傳海報、宣傳手冊封面及宣傳周邊。',
@@ -82,7 +82,7 @@ const HANDBOOK_DATA = [
         id: 'D',
         title: '器攝股',
         fullTitle: '器攝股（器材與攝影後勤股）',
-        avatar: 'assets/npc_d.png',
+        avatar: 'npc_d.png',
         alwaysShow: false,
         desc: [
             '生活籌備組：負責營期中全體幹部與隊員之膳食訂購、住宿分配及生活物資打理。',
@@ -94,7 +94,7 @@ const HANDBOOK_DATA = [
         id: 'SQUAD',
         title: '隊輔股',
         fullTitle: '隊輔股',
-        avatar: 'assets/npc_squad.png',
+        avatar: 'npc_squad.png',
         alwaysShow: true, // Always show - in UK exchange
         note: '目前在英國交換，未參加本次活動',
         desc: [
@@ -107,7 +107,7 @@ const HANDBOOK_DATA = [
         id: 'I',
         title: '機動股',
         fullTitle: '機動股',
-        avatar: 'assets/npc_i.png',
+        avatar: 'npc_i.png',
         alwaysShow: false,
         desc: [
             '即時人力支援：擔任營隊靈魂後備，隨時調配人力支援各股別人力缺口與緊急跑腿。',
@@ -119,7 +119,7 @@ const HANDBOOK_DATA = [
         id: 'E',
         title: '農場主人',
         fullTitle: '農場主人',
-        avatar: 'assets/npc_e.png',
+        avatar: 'npc_e.png',
         alwaysShow: false,
         desc: [
             '場地提供與維護：提供農場場地供營隊使用，負責場地安全維護與設施管理。'
@@ -134,7 +134,7 @@ const NPC_DATA = [
         name: '副籌 A',
         hiddenLabel: '幹部 ①',
         role: '副籌',
-        avatar: 'assets/npc_a.png',
+        avatar: 'npc_a.png',
         intro: '學弟妹們好，我是去年的宿營副籌。你們現在有一些學長姐也參加過我們去年辦的活動呢！這屆我們給了不少建議和幫助，希望你們玩得開心！我主要的工作內容是盯著所有組別的進度，一邊還要負責去跟農場主人談合作、簽合約。我和這座農場的主人也很熟呢！話說 K 和他最熟，兩人站在一起就像爺爺和孫子。',
         questions: [
             {
@@ -152,7 +152,7 @@ const NPC_DATA = [
         name: '總務 G',
         hiddenLabel: '幹部 ②',
         role: '總務',
-        avatar: 'assets/npc_g.png',
+        avatar: 'npc_g.png',
         intro: '學弟妹好……我是去年的總務 G。你們這屆能順利辦起來真的很好啦，辦活動最麻煩的就是錢跟單據了……我當初幾乎每天都泡在系辦對帳，發票收據一大堆，每一筆都要精確到個位數。大家只看到活動風光，根本不知道後面做帳有多痛苦、壓力有多大……<span class="stage-direction">（眼神閃爍，瘋狂捏著手指）</span>',
         questions: [
             {
@@ -172,7 +172,7 @@ const NPC_DATA = [
         name: '公關 B',
         hiddenLabel: '幹部 ③',
         role: '公關股',
-        avatar: 'assets/npc_b.png',
+        avatar: 'npc_b.png',
         intro: '各位小隊員好～我是去年的公關 B！我們公關的工作非常重要，負責整個營隊的活動宣傳、粉專社群經營，還有最辛苦的——到處奔波去拉贊助找經費！要是沒有我們拉到足夠的贊助，營隊根本辦不起來。',
         questions: [
             {
@@ -190,7 +190,7 @@ const NPC_DATA = [
         name: '活動 C',
         hiddenLabel: '幹部 ④',
         role: '活動股',
-        avatar: 'assets/npc_c.png',
+        avatar: 'npc_c.png',
         intro: '喲！我是活動股的 C！營隊好不好玩，看我們活動股就對了。我們底下分工很細喔：「闖關組」要負責發想超嗨的組別對抗闖關遊戲；「晚會＆夜教組」要安排晚會流程跟酒桌遊戲；「水大地組」要跑腿採買獎品和準備水大地活動；最後還有「團康 RPG 組」，負責準備團康和主持活動！',
         questions: [
             {
@@ -208,7 +208,7 @@ const NPC_DATA = [
         name: '器攝 D',
         hiddenLabel: '幹部 ⑤',
         role: '器攝股',
-        avatar: 'assets/npc_d.png',
+        avatar: 'npc_d.png',
         intro: '各位好，我是去年的器攝 D。我們股包辦了非常多元的後勤工作：「生活籌備組」要打點大家的餐點準備跟住宿相關事宜；「器材組」要負責所有沉重器材設備的搬運和操作；「攝影後勤組」則要在活動時到處拍照、錄影紀錄，還要兼顧醫療後勤。',
         questions: [
             {
@@ -226,7 +226,7 @@ const NPC_DATA = [
         name: '美宣 F',
         hiddenLabel: '幹部 ⑥',
         role: '美宣股',
-        avatar: 'assets/npc_f.png',
+        avatar: 'npc_f.png',
         intro: '哈囉……我是美宣股的 F，每天都在爆肝熬夜。我們股主要負責製作整個營期的所有道具、設計登隊時的主視覺，還有你們手上的宣傳手冊封面、每個人身上的名牌、大部分的照片發出去時也會經過我們這邊加工。',
         questions: [
             {
@@ -244,7 +244,7 @@ const NPC_DATA = [
         name: '機動 I',
         hiddenLabel: '幹部 ⑦',
         role: '機動股',
-        avatar: 'assets/npc_i.png',
+        avatar: 'npc_i.png',
         intro: '嘿！我是機動股的 I。我們機動股在活動當天就是最強的「人力支援」，哪裡有狀況、哪裡缺人手，我們就往哪裡衝！除了隨時準備處理各種突發狀況，宿營期間夜間的營區安全與安導巡邏，主要也是由我們機動股來負責安排和執行的！',
         questions: [
             {
@@ -264,7 +264,7 @@ const NPC_DATA = [
         name: '農場主人 E',
         hiddenLabel: '幹部 ⑧',
         role: '農場主人',
-        avatar: 'assets/npc_e.png',
+        avatar: 'npc_e.png',
         intro: '唉呀，各位年輕人好啊……我是這座農場的主人 E。這座農場啊，是我跟我那已經過世的老伴，年輕時一磚一瓦慢慢搭起來的。對我來說，這裡不只是一間農場，更滿載了我跟我老伴一輩子的回憶……她走了之後，我就一個人守著這裡。平時有你們這些有活力的學生來租場地辦營隊，農場熱鬧一點，我在天上的老伴看了也會高興啦。',
         questions: [
             {
