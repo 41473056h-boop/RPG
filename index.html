@@ -125,20 +125,6 @@
                 </nav>
             </aside>
 
-            <!-- Report Criminal Modal -->
-            <div class="modal" id="report-modal">
-                <div class="modal-content" style="max-width:600px;">
-                    <button class="modal-close" onclick="closeReportModal()">✕</button>
-                    <div id="report-modal-body">
-                        <h3 style="text-align:center; font-family:var(--font-serif); font-size:1.4rem; margin-bottom:8px;">🚨 犯人舉報</h3>
-                        <p style="text-align:center; font-size:0.85rem; color:var(--text-secondary); margin-bottom:24px;">根據你的調查結果，你認為誰是殺害總籌 K 的兇手？</p>
-                        <div class="report-npc-grid" id="report-npc-grid"></div>
-                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:16px;">⚠️ 舉報後無法更改，請確認你的推理！</p>
-                    </div>
-                    <div id="report-result" style="display:none;"></div>
-                </div>
-            </div>
-
             <main class="main-content">
                 <!-- NPC Tab -->
                 <div id="tab-npcs" class="tab-content active">
@@ -158,7 +144,7 @@
                     <div class="clues-grid">
                         <div class="clue-card" onclick="openClueModal('handbook')">
                             <div class="clue-card-img">
-                                <img src="assets/handbook.png" alt="幹部手冊">
+                                <img src="handbook.png" alt="幹部手冊">
                                 <div class="clue-card-overlay"><span>點擊查看</span></div>
                             </div>
                             <div class="clue-card-info">
@@ -168,7 +154,7 @@
                         </div>
                         <div class="clue-card" onclick="openClueModal('photo')">
                             <div class="clue-card-img">
-                                <img src="assets/group_photo.png" alt="大合照">
+                                <img src="group_photo.png" alt="大合照">
                                 <div class="clue-card-overlay"><span>點擊查看</span></div>
                             </div>
                             <div class="clue-card-info">
@@ -252,6 +238,21 @@
         </div>
     </div>
 
+    <!-- ===== REPORT CRIMINAL MODAL ===== -->
+    <div id="report-modal" class="modal">
+        <div class="modal-backdrop" onclick="closeReportModal()"></div>
+        <div class="modal-content" style="max-width:600px;">
+            <button class="modal-close" onclick="closeReportModal()">✕</button>
+            <div id="report-modal-body">
+                <h3 style="text-align:center; font-family:var(--font-serif); font-size:1.4rem; margin-bottom:8px;">🚨 犯人舉報</h3>
+                <p style="text-align:center; font-size:0.85rem; color:var(--text-secondary); margin-bottom:24px;">根據你的調查結果，你認為誰是殺害總籌 K 的兇手？</p>
+                <div class="report-npc-grid" id="report-npc-grid"></div>
+                <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:16px;">⚠️ 舉報後無法更改，請確認你的推理！</p>
+            </div>
+            <div id="report-result" style="display:none;"></div>
+        </div>
+    </div>
+
     <button class="mobile-nav-toggle" id="mobile-nav-toggle" onclick="toggleSidebar()">
         <span></span><span></span><span></span>
     </button>
@@ -269,7 +270,7 @@
             <h2 class="evidence-title">🔍 犯罪現場蒐證區</h2>
             <p class="evidence-subtitle">仔細觀察現場，點擊你認為可疑的物品進行蒐證</p>
             <div class="evidence-image-container" id="evidence-image-container">
-                <img src="assets/crime_scene.jpg" alt="犯罪現場">
+                <img src="crime_scene.jpg" alt="犯罪現場">
                 <!-- Hotspot: Blue bracelet (near the hand, bottom-left area) -->
                 <div class="evidence-hotspot evidence-hotspot-hidden" id="hotspot-bracelet" style="left:28%;top:74%;width:10%;height:12%;" onclick="collectEvidenceItem('bracelet')"></div>
                 <!-- Hotspot: Real expense documents (scattered receipts, right-center area) -->
