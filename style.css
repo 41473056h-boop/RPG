@@ -1383,9 +1383,11 @@ body {
     }
 
     .mobile-nav-toggle {
-        display: flex;
-    }
-
+    display: none !important; /* 加上這行把它強制隱藏 */
+    /* 下面可能還有它原本的顏色、位置等設定，保留即可 */
+    position: fixed;
+    ...
+}
     .npc-grid {
         grid-template-columns: 1fr;
     }
