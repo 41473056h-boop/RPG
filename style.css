@@ -1273,7 +1273,7 @@ body {
    MOBILE NAV TOGGLE
 ================================ */
 .mobile-nav-toggle {
-    display: none;
+    display: none !important;
     position: fixed;
     bottom: 20px;
     right: 20px;
